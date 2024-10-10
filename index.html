@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leer JSON con JavaScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #output {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Leer datos de un archivo JSON</h1>
+<button onclick="loadJSON()">Cargar datos</button>
+
+<div id="output"></div>
+
+<script>
+    // Función para leer el archivo JSON
+    function loadJSON() {
+        fetch('data.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al cargar el archivo JSON');
+                }
+                return response.json(); // Convierte la respuesta a JSON
+            })
+            .then(data => {
+                displayData(data); // Muestra los datos en la página
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // Función para mostrar los datos en el DOM
+    function displayData(data) {
+        const output = document.getElementById('output');
+        output.innerHTML = ''; // Limpia el contenido anterior
+
+        // Itera sobre el arreglo de empleados
+        data.employees.forEach(employee => {
+            const div = document.createElement('div');
+            div.innerHTML = `<strong>Nombre:</strong> ${employee.name} <br>
+                             <strong>Edad:</strong> ${employee.age} <br>
+                             <strong>Posición:</strong> ${employee.position}`;
+            div.style.marginBottom = '10px';
+            output.appendChild(div);
+        });
+    }
+</script>
+
+</body>
+</html>
